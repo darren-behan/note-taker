@@ -11,8 +11,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Routes
-app.get("/", function(req, res) {
-  res.send("Hello World!");
+app.get("*", function(req, res) {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+app.get("/notes", function(req, res) {
+  res.sendFile(path.join(__dirname, "public", "notes.html"));
 });
 
 // Starts the server to begin listening
