@@ -35,6 +35,10 @@ app.get("/api/notes", function (req, res) {
   })
 });
 
+app.post("/api/notes", function (req, res) {
+  console.log("Note POST method!" + req.body);
+});
+
 // Starts the server to begin listening
 app.listen(PORT, function() {
   console.log("App listening on PORT " + PORT);
