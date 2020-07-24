@@ -17,17 +17,17 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // Routes
-app.get("/", function(req, res) {
+app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-app.get("/notes", function(req, res) {
+app.get("/notes", function (req, res) {
   res.sendFile(path.join(__dirname, "public", "notes.html"));
 });
 
 // Retrieve notes from db.json
 app.get("/api/notes", function (req, res) {
-  readFileAsync(__dirname + "/db/db.json", 'utf8', function (error, data) {
+  readFileAsync(__dirname + "/db/db.json", "utf8", function (error, data) {
     if (error) {
       return console.log(error);
     }
@@ -37,7 +37,7 @@ app.get("/api/notes", function (req, res) {
 
 app.post("/api/notes", function (req, res) {
   const newNote = req.body;
-  readFileAsync(__dirname + "/db/db.json", 'utf8', function (err, data) {
+  readFileAsync(__dirname + "/db/db.json", "utf8", function (err, data) {
     if (err) {
       return console.log(err);
     }
@@ -45,16 +45,12 @@ app.post("/api/notes", function (req, res) {
 
     data.push(newNote);
     data[data.length - 1].id = data.length - 1;
-    writeFileAsync("./db/db.json", JSON.stringify(data), function (err, data) {
-      if (err) {
-        return err;
-      }
-      res.json(data);
-    });
+    writeFileAsync("./db/db.json", JSON.stringify(data));
+    res.json(data);
   });
 });
 
 // Starts the server to begin listening
-app.listen(PORT, function() {
+app.listen(PORT, function () {
   console.log("App listening on PORT " + PORT);
 });
