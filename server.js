@@ -50,6 +50,19 @@ app.post("/api/notes", function (req, res) {
   });
 });
 
+app.delete("/api/notes/:id", function(req, res) {
+  const selectedNoteId = req.params.id;
+  readFileAsync("./db/db.json", "utf8").then(function(data) {
+      data = JSON.parse(data);
+      data.splice(selectedNoteId, 1);
+      for (var i = 0; i < data.length; i++) {
+          data[i].id = i;
+      }
+      writeFileAsync("./db/db.json", JSON.stringify(data));
+      res.json(data);
+  });
+});
+
 // Starts the server to begin listening
 app.listen(PORT, function () {
   console.log("App listening on PORT " + PORT);
