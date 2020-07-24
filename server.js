@@ -2,6 +2,10 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
+const util = require("util");
+
+const readFileAsync = util.promisify(fs.readFile);
+const writeFileAsync = util.promisify(fs.writeFile);
 
 // Sets up the Express App
 const app = express();
@@ -11,9 +15,6 @@ const PORT = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
-
-// Database
-const db = require("./db/db.json");
 
 // Routes
 app.get("/", function(req, res) {
@@ -26,17 +27,31 @@ app.get("/notes", function(req, res) {
 
 // Retrieve notes from db.json
 app.get("/api/notes", function (req, res) {
-  fs.readFile(__dirname + "/db/db.json", 'utf8', function (error, data) {
+  readFileAsync(__dirname + "/db/db.json", 'utf8', function (error, data) {
     if (error) {
-      return console.log(error)
+      return console.log(error);
     }
-    console.log("This is Notes", data)
-    res.json(JSON.parse(data))
-  })
+    res.json(JSON.parse(data));
+  });
 });
 
 app.post("/api/notes", function (req, res) {
-  console.log("Note POST method!" + req.body);
+  const newNote = req.body;
+  readFileAsync(__dirname + "/db/db.json", 'utf8', function (err, data) {
+    if (err) {
+      return console.log(err);
+    }
+    data = JSON.parse(data);
+
+    data.push(newNote);
+    data[data.length - 1].id = data.length - 1;
+    writeFileAsync("./db/db.json", JSON.stringify(data), function (err, data) {
+      if (err) {
+        return err;
+      }
+      res.json(data);
+    });
+  });
 });
 
 // Starts the server to begin listening
