@@ -1,10 +1,10 @@
-![Code Count](https://img.shields.io/github/languages/count/darren-behan/template-engine) ![Main Code Base](https://img.shields.io/github/languages/top/darren-behan/template-engine) ![License Badge](https://img.shields.io/badge/license-none-blue) ![Version Badge](https://img.shields.io/badge/version-1.0-red) ![Last Commit](https://img.shields.io/github/last-commit/darren-behan/template-engine) ![Open Issues](https://img.shields.io/github/issues-raw/darren-behan/template-engine) ![Repo Size](https://img.shields.io/github/repo-size/darren-behan/template-engine)
+![Code Count](https://img.shields.io/github/languages/count/darren-behan/note-taker) ![Main Code Base](https://img.shields.io/github/languages/top/darren-behan/note-taker) ![License Badge](https://img.shields.io/badge/license-none-blue) ![Version Badge](https://img.shields.io/badge/version-1.0-red) ![Last Commit](https://img.shields.io/github/last-commit/darren-behan/note-taker) ![Open Issues](https://img.shields.io/github/issues-raw/darren-behan/note-taker) ![Repo Size](https://img.shields.io/github/repo-size/darren-behan/note-taker)
 
 # Welcome to Note Taker 👋
 
 ## Description
 
-📚 A `server-side application` that allows users to `create` and `delete` notes in the browser
+📚 A `server-side application` that allows users to `create` and `delete` notes
 
 ## Table of Contents 🗂
 
@@ -27,7 +27,7 @@
 
 View live demo <a href="https://obscure-fjord-01262.herokuapp.com">here</a>
 
-![Preview](./assets/images/sample-template-team-structure.png "Preview of README")
+![Preview](./assets/images/note-taker-app.png "Preview of Note Taker App")
 
 ## License
 
