@@ -27,7 +27,7 @@
 
 View live demo <a href="https://obscure-fjord-01262.herokuapp.com">here</a>
 
-![Preview](./assets/images/note-taker-app.png "Preview of Note Taker App")
+![Preview](.public/assets/images/note-taker-app.png "Preview of Note Taker App")
 
 ## License
 
