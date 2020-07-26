@@ -4,7 +4,6 @@ const path = require("path");
 const fs = require("fs");
 const util = require("util");
 
-const readFileAsync = util.promisify(fs.readFile);
 const writeFileAsync = util.promisify(fs.writeFile);
 
 // Sets up the Express App
@@ -17,7 +16,6 @@ app.use(express.json());
 app.use(express.static("public"));
 
 const notes = require("./db/db.json");
-console.log(notes);
 
 // VIEW ROUTES
 
@@ -30,8 +28,8 @@ app.get("/notes", function (req, res) {
 
 // Setup the /api/notes GET route
 app.get("/api/notes", function (req, res) {
-    // Read the db.json file and return all saved notes as JSON.
-    res.json(notes);
+  // Read the db.json file and return all saved notes as JSON.
+  res.json(notes);
 });
 
 // Setup the /api/notes POST route
@@ -43,14 +41,17 @@ app.post("/api/notes", function (req, res) {
   writeFileAsync("db/db.json", JSON.stringify(notes), function (err) {
     if (err) {
       return console.log(err);
-    };
+    }
   });
   res.json(newNote);
 });
 
-app.delete("/api/notes/:id", function(req, res) {
+// Deletes a note based on its uniqueId
+app.delete("/api/notes/:id", function (req, res) {
+  // Stores the Id parameter from the API
   const id = req.params.id;
 
+  // For loop removes the noteDeletedByUser if the Id matches that of the Id from the notes array
   for (let i = 0; i < notes.length; i++) {
     if (id === notes[i].id) {
       noteDeletedByUser = notes.indexOf(notes[i]);
@@ -58,7 +59,7 @@ app.delete("/api/notes/:id", function(req, res) {
       writeFileAsync("db/db.json", JSON.stringify(notes), function (err) {
         if (err) {
           return console.log(err);
-        };
+        }
       });
       return res.json(id);
     }
@@ -68,7 +69,7 @@ app.delete("/api/notes/:id", function(req, res) {
 // VIEW ROUTES
 
 // Display index.html when all other routes are accessed
-app.get("*", function(req, res) {
+app.get("*", function (req, res) {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
