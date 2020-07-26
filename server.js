@@ -16,51 +16,60 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
-// Routes
-app.get("/", function (req, res) {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
+const notes = require("./db/db.json");
+console.log(notes);
 
+// VIEW ROUTES
+
+// Display notes.html when /notes is accessed
 app.get("/notes", function (req, res) {
   res.sendFile(path.join(__dirname, "public", "notes.html"));
 });
 
-// Retrieve notes from db.json
+// API ROUTES
+
+// Setup the /api/notes GET route
 app.get("/api/notes", function (req, res) {
-  readFileAsync(__dirname + "/db/db.json", "utf8", function (error, data) {
-    if (error) {
-      return console.log(error);
-    }
-    res.json(JSON.parse(data));
-  });
+    // Read the db.json file and return all saved notes as JSON.
+    res.json(notes);
 });
 
+// Setup the /api/notes POST route
 app.post("/api/notes", function (req, res) {
+  // Read the db.json file and return all saved notes as JSON.
   const newNote = req.body;
-  readFileAsync(__dirname + "/db/db.json", "utf8", function (err, data) {
+  // Receives a new note, adds it to db.json, then returns the new note.
+  notes.push(newNote);
+  writeFileAsync("db/db.json", JSON.stringify(notes), function (err) {
     if (err) {
       return console.log(err);
-    }
-    data = JSON.parse(data);
-
-    data.push(newNote);
-    data[data.length - 1].id = data.length - 1;
-    writeFileAsync("./db/db.json", JSON.stringify(data));
-    res.json(data);
+    };
   });
+  res.json(newNote);
 });
 
 app.delete("/api/notes/:id", function(req, res) {
-  const selectedNoteId = req.params.id;
-  readFileAsync("./db/db.json", "utf8").then(function(data) {
-      data = JSON.parse(data);
-      data.splice(selectedNoteId, 1);
-      for (var i = 0; i < data.length; i++) {
-          data[i].id = i;
-      }
-      writeFileAsync("./db/db.json", JSON.stringify(data));
-      res.json(data);
-  });
+  const id = req.params.id;
+
+  for (let i = 0; i < notes.length; i++) {
+    if (id === notes[i].id) {
+      noteDeletedByUser = notes.indexOf(notes[i]);
+      notes.splice(noteDeletedByUser, 1);
+      writeFileAsync("db/db.json", JSON.stringify(notes), function (err) {
+        if (err) {
+          return console.log(err);
+        };
+      });
+      return res.json(id);
+    }
+  }
+});
+
+// VIEW ROUTES
+
+// Display index.html when all other routes are accessed
+app.get("*", function(req, res) {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 // Starts the server to begin listening
